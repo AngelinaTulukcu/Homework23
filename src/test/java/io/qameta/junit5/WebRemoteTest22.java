@@ -21,7 +21,7 @@ public class WebRemoteTest22 {
         Configuration.remote = "http://35.238.172.233:4444/wd/hub";
         Configuration.browser = "chrome"; // System.getProperty("browserName");
         Configuration.browserSize = "1920x1080";
-        Configuration.browserVersion = "114.0";
+        Configuration.browserVersion = "114.0.5735.90";
 
         Configuration.browserCapabilities.setCapability("selenoid:options",
                 Map.<String, Object>of(

@@ -1,53 +1,42 @@
 package io.qameta.junit5;
 
 import com.google.gson.Gson;
+import io.restassured.RestAssured;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
 public class ApiRemoteTest {
-
-    private static final String BASE_URL = "http://51.250.6.164:3000";
-
-
-    @Test
-    public void testDeleteUser() {
-        given()
-                .header("Content-Type", "application/json")
-                .baseUri(BASE_URL)
-                .when()
-                .delete("/api/users/456")
-                .then()
-                .statusCode(200);
+    @BeforeEach
+    public  void setup() {
+        System.out.println("---> Test start");
+        RestAssured.baseURI = "http://51.250.6.164:8080/";
     }
-    @Test
-    public void createOrderAndCheckStatusCodePost() {
+
+    @Test  //homework11
+    public void createOrderWithoutHeaderAndCheckStatusCodePost(){
         RandomOrder randomOrder = new RandomOrder();
         Gson gson = new Gson();
-        randomOrder.setId(generatedRandomId());
         randomOrder.setCustomerName(generatedRandomName());
         randomOrder.setCustomerPhone(generatedRandomPhone());
         randomOrder.setComment(generatedRandomComment());
-
         given()
-                .log().all()
-                .header("Content-Type", "application/json")
-                .body(gson.toJson(randomOrder))
                 .when()
-                .post(BASE_URL + "/test-orders")
+                .body(gson.toJson(randomOrder))
+                .log()
+                .all()
+                .post("test-orders")
                 .then()
-                .log().all()
-                .statusCode(200);
+                .log()
+                .all()
+                .statusCode(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
     }
 
-    private String generatedRandomName() {
-        String o = null;
-        return o;
-    }
-
-    private String generatedRandomComment() {
-        String s = null;
-        return s;
+    private Object generatedRandomComment() {
+        return null;
     }
 
     private Object generatedRandomPhone() {
@@ -55,28 +44,30 @@ public class ApiRemoteTest {
         return o;
     }
 
-    private int generatedRandomId() {
-        return 0;
+    private Object generatedRandomName() {
+        Object o = null;
+        return o;
     }
 
-
-
-    private class HttpStatus {
-        public static final int SC_OK = 200;
-        public static final int SC_UNSUPPORTED_MEDIA_TYPE = 400;
+    @Test
+    public void checkResponseBodyIsOpenGet() {
+        String status = given()
+                .when()
+                .log()
+                .all()
+                .get("test-orders/8")
+                .then()
+                .log()
+                .all()
+                .statusCode(HttpStatus.SC_OK)
+                .and()
+                .extract()
+                .path("status");
+        Assertions.assertEquals("OPEN", status);
     }
 
-    private static class RandomOrder {
-        private int id;
-        private String customerName;
-        private String customerPhone;
-        private String comment;
-
-        public void setId(int i) {
-
-        }
-
-        public void setCustomerName(String s) {
+    private class RandomOrder {
+        public void setCustomerName(Object o) {
 
         }
 
@@ -84,25 +75,7 @@ public class ApiRemoteTest {
 
         }
 
-        public void setComment(String s) {
-
+        public void setComment(Object o) {
         }
-        private Object generatedRandomPhone() {
-            Object o = null;
-            return o;
-        }
-
-        private int generatedRandomId() {
-            return 0;
-        }
-
-        private String generatedRandomComment() {
-            return null;
-        }
-
-        private String generatedRandomName() {
-            return null;
-        }
-
     }
 }
