@@ -47,7 +47,7 @@ public class WebRemoteTest22 {
     public void incorrectLoginAndCheckPopup(){
 
         Selenide.$(By.id("username")).setValue("Incorrect Login");
-        Selenide.sleep( 5500 );
+        Selenide.sleep( 7500 );
         Selenide.$(By.id("password")).setValue("Incorrect Password");
 
         Selenide.$(By.xpath("//button[@data-name='signIn-button']")).click();
@@ -60,7 +60,7 @@ public class WebRemoteTest22 {
     public void incorrectLoginAndCheckErorr(){
 
         Selenide.$(By.id("username")).setValue("userqa01");
-        Selenide.sleep( 5500 );
+        Selenide.sleep( 7500 );
         Selenide.$(By.id("password")).setValue("*YQ?T9*WrE");
 
         Selenide.$(By.xpath("//*[@data-name='password-input']/..//span[@data-name='username-input-error']")).shouldBe(Condition.exist, Condition.visible);
@@ -73,7 +73,7 @@ public class WebRemoteTest22 {
     public void incorrectLoginwithspaceAndCheckErorr(){
 
         Selenide.$(By.id("username")).setValue(" ");
-        Selenide.sleep( 5500 );
+        Selenide.sleep( 7500 );
         Selenide.$(By.id("password")).setValue("*YQ?T9*WrE");
 
         Selenide.$(By.xpath("//*[@data-name='username-input']/..//span[@data-name='username-input-error']")).shouldBe(Condition.exist, Condition.visible);
